@@ -12,7 +12,7 @@ name = dlsym(plugin_handler, #name); \
         exit(EXIT_FAILURE); \
     } \
     TraceLog(LOG_INFO, "--------------------------------");\
-    TraceLog(LOG_INFO, "name function initialized");\
+    TraceLog(LOG_INFO, #name" function initialized");\
     TraceLog(LOG_INFO, "--------------------------------");\
 
 #define PLUGIN_PATH "./libplugin.so"
@@ -51,15 +51,11 @@ int main(){
     load_plugin();
     plugin_data = plugin_init();
 
-    InitWindow(848, 448, "galloc");
+    InitWindow(848 + 200, 448, "galloc");
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
-        if(IsKeyPressed(KEY_F)){
-            memset(plugin_data, 0, sizeof(Plugin));
-            TraceLog(LOG_INFO, "Flush the data");
-        }
         if(IsKeyPressed(KEY_R)){
             TraceLog(LOG_INFO, "Reload");
             void* data = plugin_preload();

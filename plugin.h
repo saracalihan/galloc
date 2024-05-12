@@ -6,10 +6,16 @@
 
 #include "memmory.h"
 
+struct Rules {
+        size_t count;
+        char** items;
+};
+
 typedef struct{
     Stack stack;
     Arenas allocatedArenas;
     Arenas freeArenas;
+   struct Rules rules;
 } Plugin;
 
 

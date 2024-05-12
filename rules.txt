@@ -1,0 +1,20 @@
+dec 10
+dec 20
+malloc 5
+dec 30
+scope 1
+dec 2
+malloc 2
+dec 3
+malloc 1
+scope 11
+dec 12
+free 5
+dec 13
+malloc 4
+dec 14
+dec 15
+remove
+dec 40
+malloc 1
+remove

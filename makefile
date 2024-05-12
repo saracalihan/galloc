@@ -8,7 +8,7 @@ build_main: main.c build_plugin
 	cc main.c ${RAYLIB_FLAGS} -o main
 
 build_plugin: plugin.c
-	cc -c -fPIC plugin.c ${RAYLIB_FLAGS} -o plugin.o
+	cc -c -fPIC plugin.c ${RAYLIB_FLAGS} -ggdb -o plugin.o
 	cc plugin.o -shared ${RAYLIB_FLAGS} -o libplugin.so
 
 run: main
