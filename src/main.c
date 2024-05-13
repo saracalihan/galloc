@@ -4,6 +4,7 @@
 #include <dlfcn.h>
 
 #include "plugin.h"
+#include "hotreload.c"
 
 #define LOAD_SYM(name) \
 name = dlsym(plugin_handler, #name); \
@@ -11,11 +12,9 @@ name = dlsym(plugin_handler, #name); \
         fprintf(stderr, "%s\n", dlerror()); \
         exit(EXIT_FAILURE); \
     } \
-    TraceLog(LOG_INFO, "--------------------------------");\
-    TraceLog(LOG_INFO, #name" function initialized");\
-    TraceLog(LOG_INFO, "--------------------------------");\
+    TraceLog(LOG_INFO, "[PLUGIN RELOAD] "#name" function initialized");\
 
-#define PLUGIN_PATH "./libplugin.so"
+#define PLUGIN_PATH "./build/libplugin.so"
 
 void* plugin_handler = NULL;
 void* (*plugin_init)(void) = NULL;
@@ -32,21 +31,24 @@ void load_plugin(){
     }
     plugin_handler = dlopen(PLUGIN_PATH, RTLD_NOW);
      if (!plugin_handler) {
-        fprintf(stderr, "%s\n", dlerror());
+        fprintf(stderr, "[PLUGIN RELOAD] %s\n", dlerror());
         exit(EXIT_FAILURE);
     }
 
-    TraceLog(LOG_INFO, "--------------------------------");
-    TraceLog(LOG_INFO, "Plugin initialized");
-    TraceLog(LOG_INFO, "--------------------------------");
+    TraceLog(LOG_INFO, "[PLUGIN RELOAD] ------------------");
+    TraceLog(LOG_INFO, "[PLUGIN RELOAD] Plugin initialized");
 
     LOAD_SYM(plugin_init)
     LOAD_SYM(plugin_preload)
     LOAD_SYM(plugin_postload)
     LOAD_SYM(plugin_task)
+    TraceLog(LOG_INFO, "[PLUGIN RELOAD] ------------------");
 }
  
 int main(){
+    #ifdef HOTRELOAD_FILES
+    hotreload_files();
+    #endif
     // Enable hotreload with using dynamic library
     load_plugin();
     plugin_data = plugin_init();

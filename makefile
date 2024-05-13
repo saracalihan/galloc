@@ -4,12 +4,14 @@ FLAGS= -Wall -Wextra -lm -ldl -ggdb
 
 all: build_main run
 
-build_main: main.c build_plugin
-	cc main.c ${RAYLIB_FLAGS} -o main
+build_main: src/main.c build_plugin
+	cc src/main.c ${RAYLIB_FLAGS} -o build/main
 
-build_plugin: plugin.c
-	cc -c -fPIC plugin.c ${RAYLIB_FLAGS} -ggdb -o plugin.o
-	cc plugin.o -shared ${RAYLIB_FLAGS} -o libplugin.so
+build_plugin: src/plugin.c
+	cc -c -fPIC src/plugin.c ${RAYLIB_FLAGS} -ggdb -o build/plugin.o
+	cc build/plugin.o -shared ${RAYLIB_FLAGS} -o build/libplugin.so
 
-run: main
-	./main
+run: build/main
+	./build/main
+
+hotreload: build_plugin

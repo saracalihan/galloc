@@ -68,9 +68,13 @@ Run main executable:
 If you have only made improvements related to memory management or drawing,
 run the following command while the `main` executable is running:
 
-```bash
-make build_plugin
-```
+A new thread is created in the `main.c` file and this thread listens to
+all files under the `src` folder and runs the "make hotreload" command
+in case of any changes (save, update or delete) so that when you update
+the code, it is automatically compiled.
+
+You can turn this feature off and on from the `src/config.h` file and
+determine which files will excluded in this feature.
 
 Then press the `r` key in the user interface. When you press the `r` key,
 the current application data (memory, variables, etc.) is kept in the

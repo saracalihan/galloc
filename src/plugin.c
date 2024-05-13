@@ -144,7 +144,7 @@ void read_rules(){
 }
 
 Plugin* plugin_init(){
-    TraceLog(LOG_INFO, "[PLUGIN] Plugin initialized!\n");
+    TraceLog(LOG_INFO, "[PLUGIN] Plugin initialized!");
     plugin = malloc(sizeof(Plugin));
     assert(plugin != NULL && "Plugin malloc error!");
     memset(plugin, 0, sizeof(Plugin));
@@ -159,12 +159,12 @@ Plugin* plugin_init(){
 // Logics
 
 Plugin* plugin_preload(){
-    TraceLog(LOG_INFO, "[PLUGIN] Plugin preload run!\n");
+    TraceLog(LOG_INFO, "[PLUGIN] Plugin preload run!");
     return plugin;
 }
 
 void plugin_postload(Plugin* p){
-    TraceLog(LOG_INFO, "[PLUGIN] Plugin postload run!\n");
+    TraceLog(LOG_INFO, "[PLUGIN] Plugin postload run!");
     plugin = p;
     arenas_dump(&plugin->allocatedArenas, "allocated");
 }
@@ -175,11 +175,11 @@ void plugin_postload(Plugin* p){
 // GALLOC MEMORY FUNCTIONS
 void galloc_stack_push(void* data){
     stack_push(&plugin->stack, data);
-    TraceLog(LOG_INFO, "[GALLOC] Stack push %i!\n", data);
+    TraceLog(LOG_INFO, "[GALLOC] Stack push %i!", data);
 }
 
 void* galloc_stack_pop(){
-    TraceLog(LOG_INFO, "[GALLOC] Stack pop!\n");
+    TraceLog(LOG_INFO, "[GALLOC] Stack pop!");
     return stack_pop(&plugin->stack);
 }
 
@@ -187,7 +187,7 @@ void galloc_create_scope(void* data){
     stack_push(&plugin->stack, plugin->stack.fp);
     plugin->stack.fp = plugin->stack.sp;
     stack_push(&plugin->stack, data);
-    TraceLog(LOG_INFO, "[GALLOC] Scope created!\n");
+    TraceLog(LOG_INFO, "[GALLOC] Scope created!");
 }
 
 void galloc_remove_scope(){
@@ -201,19 +201,19 @@ void galloc_remove_scope(){
     } else{
         plugin->stack.sp = 0;
     }
-    TraceLog(LOG_INFO, "[GALLOC] Scope removed!\n");
+    TraceLog(LOG_INFO, "[GALLOC] Scope removed!");
 }
 
 void* galloc_malloc(size_t size){
     void* address = g_alloc(&plugin->freeArenas, &plugin->allocatedArenas, size);
     galloc_stack_push(address);
-    TraceLog(LOG_INFO, "[GALLOC] Malloc size: %i, address: %i!\n", size, address);
+    TraceLog(LOG_INFO, "[GALLOC] Malloc size: %i, address: %i!", size, address);
     return address;
 }
 
 void galloc_free(void* address){
     g_free(&plugin->freeArenas, &plugin->allocatedArenas, address);
-    TraceLog(LOG_INFO, "[GALLOC]  %i address freed!\n", address);
+    TraceLog(LOG_INFO, "[GALLOC]  %i address freed!", address);
 }
 
 void process_command(const char* command){
@@ -240,7 +240,7 @@ void process_command(const char* command){
         p+=7;
         galloc_remove_scope(atoi(p));
     }  else {
-        TraceLog(LOG_ERROR,"invalid command!\n");
+        TraceLog(LOG_ERROR,"invalid command!");
     }
 }
 
